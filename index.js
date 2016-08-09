@@ -3,10 +3,9 @@
 var util = require('util');
 
 var outputFile = require('output-file');
-var PinkiePromise = require('pinkie-promise');
 
 module.exports = function fileOrStdout(filePath, data, options) {
-  return new PinkiePromise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     if (!Buffer.isBuffer(data) && typeof data !== 'string') {
       reject(new TypeError(
         util.inspect(data) +

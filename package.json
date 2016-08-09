@@ -27,8 +27,7 @@
     "thenable"
   ],
   "dependencies": {
-    "output-file": "^1.1.1",
-    "pinkie-promise": "^2.0.1"
+    "output-file": "^1.1.1"
   },
   "devDependencies": {
     "@shinnn/eslint-config-node-legacy": "^3.0.0",
