@@ -5,7 +5,7 @@
   "repository": "shinnn/file-or-stdout",
   "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
   "scripts": {
-    "pretest": "eslint --fix --config @shinnn/node-legacy index.js test.js",
+    "pretest": "eslint --fix --config @shinnn/node index.js test.js",
     "test": "node --strong_mode --throw-deprecation --track-heap-objects test.js",
     "coverage": "node --strong_mode node_modules/.bin/istanbul cover --print=both test.js"
   },
@@ -30,7 +30,7 @@
     "output-file": "^1.1.1"
   },
   "devDependencies": {
-    "@shinnn/eslint-config-node-legacy": "^3.0.0",
+    "@shinnn/eslint-config-node": "^3.0.0",
     "eslint": "^3.2.2",
     "intercept-stdout": "^0.1.2",
     "istanbul": "^0.4.4",

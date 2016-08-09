@@ -1,11 +1,11 @@
 'use strict';
 
-var util = require('util');
+const util = require('util');
 
-var outputFile = require('output-file');
+const outputFile = require('output-file');
 
 module.exports = function fileOrStdout(filePath, data, options) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     if (!Buffer.isBuffer(data) && typeof data !== 'string') {
       reject(new TypeError(
         util.inspect(data) +
@@ -23,7 +23,7 @@ module.exports = function fileOrStdout(filePath, data, options) {
       return;
     }
 
-    outputFile(filePath, data, options, function(err) {
+    outputFile(filePath, data, options, err => {
       if (err) {
         reject(err);
         return;
