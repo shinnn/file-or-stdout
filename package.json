@@ -1,6 +1,6 @@
 {
   "name": "file-or-stdout",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Write data to the file, or print data on stdout if no files are specified",
   "repository": "shinnn/file-or-stdout",
   "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
