@@ -1,41 +1,43 @@
 {
-  "name": "file-or-stdout",
-  "version": "1.0.0",
-  "description": "Write data to a file, or to stdout if no file is specified",
-  "repository": "shinnn/file-or-stdout",
-  "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
-  "scripts": {
-    "pretest": "eslint --fix --config @shinnn/node index.js test.js",
-    "test": "node --strong_mode --throw-deprecation --track-heap-objects test.js",
-    "coverage": "node --strong_mode node_modules/.bin/istanbul cover --print=both test.js"
-  },
-  "license": "ISC",
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "file",
-    "stdout",
-    "write",
-    "print",
-    "console",
-    "output",
-    "fallback",
-    "promise",
-    "promises",
-    "then",
-    "thenable"
-  ],
-  "dependencies": {
-    "output-file": "^1.1.1"
-  },
-  "devDependencies": {
-    "@shinnn/eslint-config-node": "^3.0.0",
-    "eslint": "^3.2.2",
-    "intercept-stdout": "^0.1.2",
-    "istanbul": "^0.4.4",
-    "read-remove-file": "^4.0.0",
-    "rmfr": "^1.0.1",
-    "tape": "^4.6.0"
-  }
+	"name": "file-or-stdout",
+	"version": "1.0.0",
+	"description": "Write data to a file, or to stdout if no file is specified",
+	"repository": "shinnn/file-or-stdout",
+	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+	"scripts": {
+		"pretest": "eslint --fix --format=codeframe .",
+		"test": "nyc --reporter=html --reporter=text node test.js"
+	},
+	"license": "ISC",
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"file",
+		"stdout",
+		"write",
+		"print",
+		"console",
+		"output",
+		"fallback",
+		"promise",
+		"promises",
+		"then",
+		"thenable"
+	],
+	"dependencies": {
+		"output-file": "^1.1.1"
+	},
+	"devDependencies": {
+		"@shinnn/eslint-config-node": "^5.0.0",
+		"eslint": "^4.18.2",
+		"intercept-stdout": "^0.1.2",
+		"nyc": "^11.5.0",
+		"read-remove-file": "^5.0.0",
+		"rmfr": "^2.0.0",
+		"tape": "^4.9.0"
+	},
+	"eslintConfig": {
+		"extends": "@shinnn/node"
+	}
 }

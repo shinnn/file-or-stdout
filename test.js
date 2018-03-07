@@ -6,47 +6,62 @@ const readRemoveFile = require('read-remove-file');
 const rmfr = require('rmfr');
 const {test} = require('tape');
 
-test('fileOrStdout', t => {
-  t.plan(7);
+test('fileOrStdout', async t => {
+	t.plan(7);
 
-  const stdouts = [];
-  const unhookStdoutInterception = interceptStdout(str => {
-    stdouts.push(str);
-    return '';
-  });
+	const stdouts = [];
+	const unhookStdoutInterception = interceptStdout(str => {
+		stdouts.push(str);
+		return '';
+	});
 
-  fileOrStdout(null, 'Hello').then(isFile => {
-    unhookStdoutInterception();
+	(async () => {
+		const isFile = await fileOrStdout(null, 'Hello');
+		unhookStdoutInterception();
 
-    t.strictEqual(isFile, false, 'should be resolve with `false` when it doesn\'t write a file.');
-    t.strictEqual(stdouts.join(), 'Hello', 'should print data to stdout when no files are specified.');
-  }).catch(t.fail);
+		t.equal(isFile, false, 'should be resolve with `false` when it doesn\'t write a file.');
+		t.equal(stdouts.join(), 'Hello', 'should print data to stdout when no files are specified.');
+	})();
 
-  fileOrStdout('__this/is/a/path/to/the/temporary/file__', 'Hi').then(isFile => {
-    t.strictEqual(isFile, true, 'should be resolve with `true` when it writes a file.');
-    return readRemoveFile('__this/is/a/path/to/the/temporary/file__', 'utf8');
-  }).then(data => {
-    t.strictEqual(data, 'Hi', 'should wrote data to a file when a file path is specified.');
-    rmfr('__this');
-  }).catch(t.fail);
+	(async () => {
+		const isFile = await fileOrStdout('__this/is/a/path/to/the/temporary/file__', 'Hi');
+		t.equal(isFile, true, 'should be resolve with `true` when it writes a file.');
+		t.equal(
+			await readRemoveFile('__this/is/a/path/to/the/temporary/file__', 'utf8'),
+			'Hi',
+			'should wrote data to a file when a file path is specified.'
+		);
+		await rmfr('__this');
+	})();
 
-  fileOrStdout().then(t.fail, err => {
-    t.strictEqual(
-      err.message,
-      'undefined is neither buffer nor string. Expected data to be printed on stdout.',
-      'should fail when it takes no arguments.'
-    );
-  }).catch(t.fail);
+	const fail = t.fail.bind(t, 'Unexpectedly succeeded.');
 
-  fileOrStdout('/a', ['b', 'c']).then(t.fail, err => {
-    t.strictEqual(
-      err.message,
-      '[ \'b\', \'c\' ] is neither buffer nor string. Expected data to be written on /a.',
-      'should fail when the second argument is neither string nor buffer.'
-    );
-  }).catch(t.fail);
+	try {
+		await fileOrStdout();
+		fail();
+	} catch (err) {
+		t.equal(
+			err.toString(),
+			'TypeError: undefined is neither buffer nor string. Expected data to be printed on stdout.',
+			'should fail when it takes no arguments.'
+		);
+	}
 
-  fileOrStdout(__dirname, '').then(t.fail, err => {
-    t.strictEqual(err.code, 'EISDIR', 'should fail when it cannot write a file.');
-  }).catch(t.fail);
+	try {
+		await fileOrStdout('/a', ['b', 'c']);
+		fail();
+	} catch (err) {
+		t.equal(
+			err.toString(),
+			'TypeError: [ \'b\', \'c\' ] is neither buffer nor string. Expected data to be written on /a.',
+			'should fail when the second argument is neither string nor buffer.'
+		);
+	}
+
+	try {
+		await fileOrStdout(__dirname, '');
+		fail();
+	} catch ({code}) {
+		t.equal(code, 'EISDIR', 'should fail when it cannot write a file.');
+	}
 });
