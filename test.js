@@ -24,10 +24,10 @@ test('fileOrStdout', async t => {
 	})();
 
 	(async () => {
-		const isFile = await fileOrStdout('__this/is/a/path/to/the/temporary/file__', 'Hi');
+		const isFile = await fileOrStdout('__this/is/a/path/to/the/temp/file__', new Uint8Array([72, 105]));
 		t.equal(isFile, true, 'should be resolve with `true` when it writes a file.');
 		t.equal(
-			await readRemoveFile('__this/is/a/path/to/the/temporary/file__', 'utf8'),
+			await readRemoveFile('__this/is/a/path/to/the/temp/file__', 'utf8'),
 			'Hi',
 			'should wrote data to a file when a file path is specified.'
 		);
@@ -42,7 +42,7 @@ test('fileOrStdout', async t => {
 	} catch (err) {
 		t.equal(
 			err.toString(),
-			'TypeError: undefined is neither buffer nor string. Expected data to be printed on stdout.',
+			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to stdout, but got undefined.',
 			'should fail when it takes no arguments.'
 		);
 	}
@@ -53,7 +53,7 @@ test('fileOrStdout', async t => {
 	} catch (err) {
 		t.equal(
 			err.toString(),
-			'TypeError: [ \'b\', \'c\' ] is neither buffer nor string. Expected data to be written on /a.',
+			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to /a, but got [ \'b\', \'c\' ].',
 			'should fail when the second argument is neither string nor buffer.'
 		);
 	}

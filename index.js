@@ -6,11 +6,11 @@ const outputFile = require('output-file');
 
 module.exports = function fileOrStdout(filePath, data, options) {
 	return new Promise((resolve, reject) => {
-		if (!Buffer.isBuffer(data) && typeof data !== 'string') {
-			reject(new TypeError(`${
+		if (!Buffer.isBuffer(data) && typeof data !== 'string' && !(data instanceof Uint8Array)) {
+			reject(new TypeError(`Expected data (<string|Buffer|Uint8Array>) to be written to ${
+				filePath || 'stdout'
+			}, but got ${
 				inspect(data)
-			} is neither buffer nor string. Expected data to be ${
-				filePath ? `written on ${filePath}` : 'printed on stdout'
 			}.`));
 
 			return;
