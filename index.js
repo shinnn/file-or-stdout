@@ -1,7 +1,6 @@
 'use strict';
 
-const inspect = require('util').inspect;
-
+const inspectWithKind = require('inspect-with-kind');
 const outputFile = require('output-file');
 
 module.exports = function fileOrStdout(filePath, data, options) {
@@ -10,7 +9,7 @@ module.exports = function fileOrStdout(filePath, data, options) {
 			reject(new TypeError(`Expected data (<string|Buffer|Uint8Array>) to be written to ${
 				filePath || 'stdout'
 			}, but got ${
-				inspect(data)
+				inspectWithKind(data)
 			}.`));
 
 			return;

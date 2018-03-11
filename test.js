@@ -48,12 +48,12 @@ test('fileOrStdout', async t => {
 	}
 
 	try {
-		await fileOrStdout('/a', ['b', 'c']);
+		await fileOrStdout('/a', ['b']);
 		fail();
 	} catch (err) {
 		t.equal(
 			err.toString(),
-			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to /a, but got [ \'b\', \'c\' ].',
+			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to /a, but got [ \'b\' ] (array).',
 			'should fail when the second argument is neither string nor buffer.'
 		);
 	}
