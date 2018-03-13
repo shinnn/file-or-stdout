@@ -7,7 +7,7 @@ const rmfr = require('rmfr');
 const {test} = require('tape');
 
 test('fileOrStdout', async t => {
-	t.plan(7);
+	t.plan(9);
 
 	const stdouts = [];
 	const unhookStdoutInterception = interceptStdout(str => {
@@ -37,24 +37,24 @@ test('fileOrStdout', async t => {
 	const fail = t.fail.bind(t, 'Unexpectedly succeeded.');
 
 	try {
-		await fileOrStdout();
-		fail();
-	} catch (err) {
-		t.equal(
-			err.toString(),
-			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to stdout, but got undefined.',
-			'should fail when it takes no arguments.'
-		);
-	}
-
-	try {
 		await fileOrStdout('/a', ['b']);
 		fail();
 	} catch (err) {
 		t.equal(
 			err.toString(),
 			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to /a, but got [ \'b\' ] (array).',
-			'should fail when the second argument is neither string nor buffer.'
+			'should fail when the data is neither string, Buffer nor Uint8Array.'
+		);
+	}
+
+	try {
+		await fileOrStdout(null, new Uint16Array());
+		fail();
+	} catch (err) {
+		t.equal(
+			err.toString(),
+			'TypeError: Expected data (<string|Buffer|Uint8Array>) to be written to stdout, but got Uint16Array [  ].',
+			'should fail when the data is ArrayBuffer but not Uint8Array.'
 		);
 	}
 
@@ -63,5 +63,27 @@ test('fileOrStdout', async t => {
 		fail();
 	} catch ({code}) {
 		t.equal(code, 'EISDIR', 'should fail when it cannot write a file.');
+	}
+
+	try {
+		await fileOrStdout();
+		fail();
+	} catch (err) {
+		t.equal(
+			err.toString(),
+			'RangeError: Expected 2 or 3 arguments (<any>, <string|Buffer|Uint8Array>[, <Object|string>]), but got no arguments.',
+			'should fail when it takes no arguments.'
+		);
+	}
+
+	try {
+		await fileOrStdout('_', '_', '_', '_');
+		fail();
+	} catch (err) {
+		t.equal(
+			err.toString(),
+			'RangeError: Expected 2 or 3 arguments (<any>, <string|Buffer|Uint8Array>[, <Object|string>]), but got 4 arguments.',
+			'should fail when it takes no arguments.'
+		);
 	}
 });
