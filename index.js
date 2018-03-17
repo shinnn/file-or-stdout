@@ -1,7 +1,11 @@
 'use strict';
 
+const {promisify} = require('util');
+
 const inspectWithKind = require('inspect-with-kind');
 const outputFile = require('output-file');
+
+const promisifiedOutputFile = promisify(outputFile);
 
 module.exports = async function fileOrStdout(...args) {
 	const argLen = args.length;
@@ -22,21 +26,11 @@ module.exports = async function fileOrStdout(...args) {
 		}.`);
 	}
 
-	return new Promise((resolve, reject) => {
-		if (filePath) {
-			outputFile(...args, err => {
-				if (err) {
-					reject(err);
-					return;
-				}
+	if (filePath) {
+		await promisifiedOutputFile(...args);
+		return true;
+	}
 
-				resolve(true);
-			});
-
-			return;
-		}
-
-		process.stdout.write(data);
-		resolve(false);
-	});
+	process.stdout.write(data);
+	return false;
 };
