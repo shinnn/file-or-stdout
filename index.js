@@ -6,6 +6,7 @@ const inspectWithKind = require('inspect-with-kind');
 const outputFile = require('output-file');
 
 const promisifiedOutputFile = promisify(outputFile);
+const writeStdout = promisify(process.stdout.write.bind(process.stdout));
 
 module.exports = async function fileOrStdout(...args) {
 	const argLen = args.length;
@@ -31,6 +32,6 @@ module.exports = async function fileOrStdout(...args) {
 		return true;
 	}
 
-	process.stdout.write(data);
+	await writeStdout(data);
 	return false;
 };
