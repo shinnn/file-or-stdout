@@ -57,6 +57,10 @@ When the first argument is a falsy value, it writes data to [`process.stdout`](h
 })();
 ```
 
+## Related project
+
+* [file-or-stdin](https://github.com/shinnn/file-or-stdin) — Inverse of this module; read a file, or read stdin if no file is specified
+
 ## License
 
 [ISC License](./LICENSE) © 2018 Shinnosuke Watanabe
