@@ -1,6 +1,7 @@
 'use strict';
 
 const {promisify} = require('util');
+const {isUint8Array} = require('util').types;
 
 const inspectWithKind = require('inspect-with-kind');
 const outputFile = require('output-file');
@@ -19,7 +20,7 @@ module.exports = async function fileOrStdout(...args) {
 
 	const [filePath, data] = args;
 
-	if (!Buffer.isBuffer(data) && typeof data !== 'string' && !(data instanceof Uint8Array)) {
+	if (!Buffer.isBuffer(data) && typeof data !== 'string' && !isUint8Array(data)) {
 		throw new TypeError(`Expected data (<string|Buffer|Uint8Array>) to be written to ${
 			filePath || 'stdout'
 		}, but got ${
