@@ -2,13 +2,13 @@
 	"name": "file-or-stdout",
 	"version": "2.0.0-4",
 	"description": "Write data to a file, or to stdout if no file is specified",
-	"repository": "shinnn/file-or-stdout",
 	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
-	"scripts": {
-		"pretest": "eslint --fix --format=codeframe .",
-		"test": "nyc --reporter=html --reporter=text node test.js"
-	},
+	"repository": "shinnn/file-or-stdout",
 	"license": "ISC",
+	"scripts": {
+		"pretest": "eslint .",
+		"test": "nyc node test.js"
+	},
 	"files": [
 		"index.js"
 	],
@@ -26,19 +26,22 @@
 		"thenable"
 	],
 	"dependencies": {
-		"inspect-with-kind": "^1.0.4",
-		"output-file": "^1.1.1"
+		"inspect-with-kind": "^1.0.5",
+		"output-file": "^2.0.0"
 	},
 	"devDependencies": {
-		"@shinnn/eslint-config-node": "^5.0.0",
-		"eslint": "^4.19.1",
+		"@shinnn/eslint-config": "^6.9.0",
+		"eslint": "^5.14.0",
 		"intercept-stdout": "^0.1.2",
-		"nyc": "^11.7.1",
-		"read-remove-file": "^5.0.0",
+		"nyc": "^13.3.0",
+		"nyc-config-common": "^1.0.1",
 		"rmfr": "^2.0.0",
-		"tape": "^4.9.0"
+		"tape": "^4.10.1"
 	},
 	"eslintConfig": {
-		"extends": "@shinnn/node"
+		"extends": "@shinnn"
+	},
+	"nyc": {
+		"extends": "nyc-config-common"
 	}
 }

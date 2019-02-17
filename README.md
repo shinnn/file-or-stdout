@@ -7,20 +7,20 @@
 Write data to a file, or to stdout if no file is specified
 
 ```javascript
-const {readFileSync} = require('fs');
+const {readFile} = require('fs').promises;
 const fileOrStdout = require('file-or-stdout');
 
 (async () => {
   await fileOrStdout('path/to/a/file', 'Hi');
-  readFileSync('path/to/a/file', 'utf8'); //=> 'Hi'
+  await readFile('path/to/a/file', 'utf8'); //=> 'Hi'
 })();
 
-fileOrStdout(null, 'Hi'); //=> print 'Hi' on stdout
+fileOrStdout(null, 'Hi'); // print 'Hi' on stdout
 ```
 
 ## Installation
 
-[Use](https://docs.npmjs.com/cli/install) [npm](https://docs.npmjs.com/getting-started/what-is-npm).
+[Use](https://docs.npmjs.com/cli/install) [npm](https://docs.npmjs.com/about-npm/).
 
 ```
 npm install file-or-stdout
@@ -34,20 +34,20 @@ const fileOrStdout = require('file-or-stdout');
 
 ### fileOrStdout(*filePath*, *data* [, *options*])
 
-*filePath*: `string` or a [falsy value](https://developer.mozilla.org/docs/Glossary/Falsy)  
-*data*: `string` or [`Buffer`](https://nodejs.org/api/buffer.html#buffer_class_buffer)  
-*options*: `Object` or `string` ([`fs.writeFile`](https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback) options)  
+*filePath*: `string` `Buffer` `Uint8Array` `URL` or a [falsy value](https://developer.mozilla.org/docs/Glossary/Falsy)  
+*data*: `string` `Buffer` `Uint8Array`  
+*options*: `Object` ([output-file](https://github.com/shinnn/output-file) [options](https://github.com/shinnn/output-file#options)) or `string` (encoding)  
 Return: `Promise<boolean>`
 
-When the first argument is a file path, it writes data to a file after creating its missing ancestor directories. The returned promise will be resolved with `true`.
+When the first argument is a file path, it writes data to a file after creating its missing ancestor directories. The returned `Promise` will be resolved with `true`.
 
-When the first argument is a falsy value, it writes data to [`process.stdout`](https://nodejs.org/api/process.html#process_process_stdout). The returned promise will be resolved with `false`.
+When the first argument is a falsy value, it writes data to [`process.stdout`](https://nodejs.org/api/process.html#process_process_stdout). The returned `Promise` will be resolved with `false`.
 
 ```javascript
 (async () => {
-  const isFileWritten = await fileOrStdout('file.txt', 'hello');
+  const isFileWritten = await fileOrStdout(new URL('/Users/your/file.txt'), 'hello');
 
-  fs.readFileSync('file.txt', 'utf8'); //=> 'hello'
+  await fs.promises.readFile('/Users/your/file.txt', 'utf8'); //=> 'hello'
   isFileWritten; //=> true
 })();
 
@@ -63,4 +63,4 @@ When the first argument is a falsy value, it writes data to [`process.stdout`](h
 
 ## License
 
-[ISC License](./LICENSE) © 2018 Shinnosuke Watanabe
+[ISC License](./LICENSE) © 2018 - 2019 Shinnosuke Watanabe
