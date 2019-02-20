@@ -1,6 +1,6 @@
 {
 	"name": "file-or-stdout",
-	"version": "2.0.0-4",
+	"version": "2.0.0-5",
 	"description": "Write data to a file, or to stdout if no file is specified",
 	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
 	"repository": "shinnn/file-or-stdout",
@@ -31,7 +31,7 @@
 	},
 	"devDependencies": {
 		"@shinnn/eslint-config": "^6.9.0",
-		"eslint": "^5.14.0",
+		"eslint": "^5.14.1",
 		"intercept-stdout": "^0.1.2",
 		"nyc": "^13.3.0",
 		"nyc-config-common": "^1.0.1",
