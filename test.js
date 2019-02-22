@@ -4,22 +4,32 @@ const {join} = require('path');
 const {pathToFileURL} = require('url');
 const {readFile} = require('fs').promises;
 
-const interceptStdout = require('intercept-stdout');
 const rmfr = require('rmfr');
 const test = require('tape');
 
 test('fileOrStdout()', async t => {
 	const stdouts = [];
-	const unhookStdoutInterception = interceptStdout(str => {
-		stdouts.push(str);
-		return '';
-	});
+	const originalWrite = process.stdout.write.bind(process.stdout);
+	let intercepted = true;
+
+	process.stdout.write = function interceptedStdoutWrite(...args) {
+		if (intercepted) {
+			stdouts.push(args);
+			return originalWrite('', ...args.slice(1));
+		}
+
+		return originalWrite(...args);
+	};
+
 	const fileOrStdout = require('.');
 	const isFile = await fileOrStdout(null, 'Hello');
-	unhookStdoutInterception();
+
+	await fileOrStdout('', 'World', 'base64');
+	intercepted = false;
 
 	t.equal(isFile, false, 'should be resolve with `false` when it doesn\'t write a file.');
-	t.equal(stdouts.join(), 'Hello', 'should print data to stdout when no files are specified.');
+	t.equal(stdouts[0][0], 'Hello', 'should print data to stdout when no files are specified.');
+	t.equal(stdouts[1][1], 'base64', 'should reflect eocoding to the output.');
 
 	const tmp = join(__dirname, '__this', 'is', 'a', 'path', 'to', 'the', 'temp', 'file__');
 
@@ -71,6 +81,20 @@ test('Argument validation', async t => {
 		fail();
 	} catch ({code}) {
 		t.equal(code, 'EISDIR', 'should fail when it cannot write a file.');
+	}
+
+	try {
+		await fileOrStdout(null, '2', {encoding: 'utf7'});
+		fail();
+	} catch ({code}) {
+		t.equal(code, 'ERR_INVALID_OPT_VALUE_ENCODING', 'should fail when it takes an invalid option.');
+	}
+
+	try {
+		await fileOrStdout(null, '2', 'base65');
+		fail();
+	} catch ({code}) {
+		t.equal(code, 'ERR_INVALID_OPT_VALUE_ENCODING', 'should fail when it takes an invalid encoding.');
 	}
 
 	try {

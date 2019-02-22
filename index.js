@@ -26,7 +26,7 @@ module.exports = async function fileOrStdout(...args) {
 		throw error;
 	}
 
-	const [filePath, data] = args;
+	const [filePath, data, options = {}] = args;
 
 	if (!Buffer.isBuffer(data) && typeof data !== 'string' && !isUint8Array(data)) {
 		throw new TypeError(`Expected data (<string|Buffer|Uint8Array>) to be written to ${
@@ -39,6 +39,22 @@ module.exports = async function fileOrStdout(...args) {
 		return true;
 	}
 
-	await writeStdout(data);
+	try {
+		await outputFile(__dirname, data, options);
+	} catch (err) {
+		if (err.code !== 'EISDIR') {
+			Error.captureStackTrace(err, module.exports);
+			throw err;
+		}
+	}
+
+	const encoding = typeof options === 'string' ? options : options.encoding;
+
+	if (argLen !== 3 || typeof data !== 'string' || !encoding) {
+		await writeStdout(data);
+	} else {
+		await writeStdout(data, encoding);
+	}
+
 	return false;
 };

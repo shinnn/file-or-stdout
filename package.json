@@ -32,7 +32,6 @@
 	"devDependencies": {
 		"@shinnn/eslint-config": "^6.9.0",
 		"eslint": "^5.14.1",
-		"intercept-stdout": "^0.1.2",
 		"nyc": "^13.3.0",
 		"nyc-config-common": "^1.0.1",
 		"rmfr": "^2.0.0",

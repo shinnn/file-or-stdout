@@ -1,7 +1,7 @@
 # file-or-stdout
 
 [![npm version](https://img.shields.io/npm/v/file-or-stdout.svg)](https://www.npmjs.com/package/file-or-stdout)
-[![Build Status](https://travis-ci.org/shinnn/file-or-stdout.svg?branch=master)](https://travis-ci.org/shinnn/file-or-stdout)
+[![Build Status](https://travis-ci.com/shinnn/file-or-stdout.svg?branch=master)](https://travis-ci.com/shinnn/file-or-stdout)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/file-or-stdout.svg)](https://coveralls.io/github/shinnn/file-or-stdout?branch=master)
 
 Write data to a file, or to stdout if no file is specified
@@ -45,7 +45,7 @@ When the first argument is a falsy value, it writes data to [`process.stdout`](h
 
 ```javascript
 (async () => {
-  const isFileWritten = await fileOrStdout(new URL('/Users/your/file.txt'), 'hello');
+  const isFileWritten = await fileOrStdout(new URL('file:///Users/your/file.txt'), 'hello');
 
   await fs.promises.readFile('/Users/your/file.txt', 'utf8'); //=> 'hello'
   isFileWritten; //=> true
