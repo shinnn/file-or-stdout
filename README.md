@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/file-or-stdout.svg)](https://www.npmjs.com/package/file-or-stdout)
 [![Build Status](https://travis-ci.com/shinnn/file-or-stdout.svg?branch=master)](https://travis-ci.com/shinnn/file-or-stdout)
-[![Coverage Status](https://img.shields.io/coveralls/shinnn/file-or-stdout.svg)](https://coveralls.io/github/shinnn/file-or-stdout?branch=master)
+[![codecov](https://codecov.io/gh/shinnn/file-or-stdout/branch/master/graph/badge.svg)](https://codecov.io/gh/shinnn/file-or-stdout)
 
 Write data to a file, or to stdout if no file is specified
 
@@ -34,8 +34,8 @@ const fileOrStdout = require('file-or-stdout');
 
 ### fileOrStdout(*filePath*, *data* [, *options*])
 
-*filePath*: `string` `Buffer` `Uint8Array` `URL` or a [falsy value](https://developer.mozilla.org/docs/Glossary/Falsy)  
-*data*: `string` `Buffer` `Uint8Array`  
+*filePath*: `string | Buffer | Uint8Array | URL` or a [falsy value](https://developer.mozilla.org/docs/Glossary/Falsy)  
+*data*: `string | Buffer | Uint8Array`  
 *options*: `Object` ([output-file](https://github.com/shinnn/output-file) [options](https://github.com/shinnn/output-file#options)) or `string` (encoding)  
 Return: `Promise<boolean>`
 
